@@ -1,0 +1,16 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /identify
+
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: "jdbc:mysql://localhost:3306/identify"
+    username: root
+    password: root
+  jpa:
+    data-platform: org.hibernate.dialect.MYSQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+
