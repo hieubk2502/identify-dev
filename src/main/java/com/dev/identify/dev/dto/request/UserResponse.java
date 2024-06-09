@@ -1,10 +1,5 @@
-package com.dev.identify.dev.entity;
+package com.dev.identify.dev.dto.request;
 
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,25 +8,18 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 
-@Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+public class UserResponse {
     String id;
 
     String username;
-
-    String password;
 
     String firstname;
 
     String lastname;
 
     LocalDate dob;
-
 }
