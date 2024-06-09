@@ -1,28 +1,32 @@
 package com.dev.identify.dev.service;
 
-import com.dev.identify.dev.dto.UserCreateRequest;
+import com.dev.identify.dev.dto.request.UserCreateRequest;
+import com.dev.identify.dev.dto.request.UserUpdateRequest;
 import com.dev.identify.dev.entity.User;
+import com.dev.identify.dev.exception.AppException;
+import com.dev.identify.dev.exception.ErrorCode;
 import com.dev.identify.dev.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserService  {
 
-    @Autowired
     UserRepository userRepository;
 
     public User createUser(UserCreateRequest request) {
-        User user = new User();
 
+        if(userRepository.existsByUsername(request.getUsername())){
+            throw new AppException(ErrorCode.USER_EXISTED);
+        }
+
+        User user = new User();
         user.setUsername(request.getUsername());
         user.setPassword(request.getPassword());
         user.setFirstname(request.getFirstname());
@@ -36,8 +40,9 @@ public class UserService  {
     }
 
     public User getUser(String userId) {
-        Optional<User> result =  userRepository.findById(userId);
-        return result.get();
+         return userRepository.findById(userId).orElseThrow(
+                 () -> new RuntimeException("User not found")
+         );
     }
 
     public void deleteUser(String userId) {
@@ -45,7 +50,7 @@ public class UserService  {
         userRepository.delete(user);
     }
 
-    public User updateUsers(String userId, UserCreateRequest request) {
+    public User updateUsers(String userId, UserUpdateRequest request) {
         User user = userRepository.findById(userId).get();
         user.setUsername(request.getUsername());
         user.setPassword(request.getPassword());
