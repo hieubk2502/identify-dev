@@ -1,4 +1,4 @@
-package com.dev.identify.dev.dto.request;
+package com.dev.identify.dev.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,6 +16,8 @@ public class UserResponse {
     String id;
 
     String username;
+
+    String password;
 
     String firstname;
 

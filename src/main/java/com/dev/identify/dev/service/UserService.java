@@ -1,7 +1,7 @@
 package com.dev.identify.dev.service;
 
 import com.dev.identify.dev.dto.request.UserCreateRequest;
-import com.dev.identify.dev.dto.request.UserResponse;
+import com.dev.identify.dev.dto.response.UserResponse;
 import com.dev.identify.dev.dto.request.UserUpdateRequest;
 import com.dev.identify.dev.entity.User;
 import com.dev.identify.dev.exception.AppException;
@@ -11,6 +11,8 @@ import com.dev.identify.dev.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,8 +33,11 @@ public class UserService {
         }
 
         User user = userMapper.toUser(request);
-        userRepository.save(user);
-        return userMapper.toUserResponse(user);
+        // Bcrypt password
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        return userMapper.toUserResponse(userRepository.save(user));
     }
 
     public List<UserResponse> getUsers() {

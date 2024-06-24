@@ -2,7 +2,7 @@ package com.dev.identify.dev.controller;
 
 import com.dev.identify.dev.dto.request.ApiResponse;
 import com.dev.identify.dev.dto.request.UserCreateRequest;
-import com.dev.identify.dev.dto.request.UserResponse;
+import com.dev.identify.dev.dto.response.UserResponse;
 import com.dev.identify.dev.dto.request.UserUpdateRequest;
 import com.dev.identify.dev.service.UserService;
 import jakarta.validation.Valid;

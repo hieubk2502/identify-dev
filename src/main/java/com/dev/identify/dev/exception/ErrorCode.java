@@ -14,8 +14,10 @@ public enum ErrorCode {
     UNCATEGORIZED_EXCEPTION(9999, "Not categorized exception"),
     INVALID_KEY(1000, "Invalid_key"),
     USER_EXISTED(1001, "User existed"),
-    USERNAME_INVALID(1002, "Username must be a least at 4 characters"),
-    PASSWORD_INVALID(1002, "Password must be a least at 4 characters");
+    USER_NOT_EXISTED(1002, "User not existed"),
+    USERNAME_INVALID(1003, "Username must be a least at 4 characters"),
+    PASSWORD_INVALID(1003, "Password must be a least at 4 characters"),
+    UNAUTHENTICATED(1004, "Unauthenticated");
 
     int code;
     String message;
