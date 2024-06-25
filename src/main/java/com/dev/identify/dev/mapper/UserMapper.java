@@ -1,8 +1,8 @@
 package com.dev.identify.dev.mapper;
 
 import com.dev.identify.dev.dto.request.UserCreateRequest;
-import com.dev.identify.dev.dto.response.UserResponse;
 import com.dev.identify.dev.dto.request.UserUpdateRequest;
+import com.dev.identify.dev.dto.response.UserResponse;
 import com.dev.identify.dev.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
