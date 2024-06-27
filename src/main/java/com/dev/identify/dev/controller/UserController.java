@@ -57,6 +57,15 @@ public class UserController {
                 .build();
     }
 
+    @GetMapping("/myInfo")
+    ApiResponse<UserResponse> getMyInfo() {
+        UserResponse userResponse = userService.getMyInfo();
+
+        return ApiResponse.<UserResponse>builder()
+                .body(userResponse)
+                .build();
+    }
+
     @DeleteMapping("/{userId}")
     ApiResponse<UserResponse> deleteUser(@PathVariable("userId") String userId) {
         UserResponse userResponse = userService.deleteUser(userId);
