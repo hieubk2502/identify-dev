@@ -5,20 +5,24 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public enum ErrorCode {
-    UNCATEGORIZED_EXCEPTION(9999, "Not categorized exception"),
-    INVALID_KEY(1000, "Invalid_key"),
-    USER_EXISTED(1001, "User existed"),
-    USER_NOT_EXISTED(1002, "User not existed"),
-    USERNAME_INVALID(1003, "Username must be a least at 4 characters"),
-    PASSWORD_INVALID(1003, "Password must be a least at 4 characters"),
-    UNAUTHENTICATED(1004, "Unauthenticated");
+    UNCATEGORIZED_EXCEPTION(9999, "Not categorized exception", HttpStatus.INTERNAL_SERVER_ERROR),
+    INVALID_KEY(1000, "Invalid_key", HttpStatus.BAD_REQUEST),
+    USER_EXISTED(1001, "User existed", HttpStatus.BAD_REQUEST),
+    USER_NOT_EXISTED(1002, "User not existed", HttpStatus.NOT_FOUND),
+    USERNAME_INVALID(1003, "Username must be a least at 4 characters", HttpStatus.BAD_REQUEST),
+    PASSWORD_INVALID(1004, "Password must be a least at 4 characters", HttpStatus.BAD_REQUEST),
+    UNAUTHENTICATED(1005, "Unauthenticated", HttpStatus.UNAUTHORIZED),
+    UNAUTHORIZED(1006, "Unauthorized", HttpStatus.FORBIDDEN);
 
     int code;
     String message;
+    HttpStatusCode status;
 }

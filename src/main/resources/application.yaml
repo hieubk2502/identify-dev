@@ -13,6 +13,10 @@ spring:
     data-platform: org.hibernate.dialect.MYSQL5InnoDBDialect
     hibernate:
       ddl-auto: update
+      transaction:
+        jta:
+          platform: true
+    show-sql: true
 
 jwt:
   signerKey: "4neUK67c8/yWzeUvvxM83RqiO+fAz9sd3y+ECdfot/h50UOhfzDgqt9HoGumHN6p"

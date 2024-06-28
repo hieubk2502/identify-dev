@@ -2,6 +2,7 @@ package com.dev.identify.dev.exception;
 
 import com.dev.identify.dev.dto.request.ApiResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,7 +15,7 @@ public class GlobalExceptionHandler {
 
         ErrorCode errorCode = ErrorCode.UNCATEGORIZED_EXCEPTION;
 
-        return ResponseEntity.badRequest().body(
+        return ResponseEntity.status(errorCode.getStatus()).body(
                 ApiResponse.builder()
                         .code(errorCode.getCode())
                         .message(errorCode.getMessage())
@@ -27,7 +28,20 @@ public class GlobalExceptionHandler {
 
         ErrorCode errorCode = ex.getErrorCode();
 
-        return ResponseEntity.badRequest().body(
+        return ResponseEntity.status(errorCode.getStatus()).body(
+                ApiResponse.builder()
+                        .code(errorCode.getCode())
+                        .message(errorCode.getMessage())
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(value = AccessDeniedException.class)
+    ResponseEntity<ApiResponse> handleAccessDeniedException(AccessDeniedException ex) {
+
+        ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
+
+        return ResponseEntity.status(errorCode.getStatus()).body(
                 ApiResponse.builder()
                         .code(errorCode.getCode())
                         .message(errorCode.getMessage())
@@ -45,7 +59,7 @@ public class GlobalExceptionHandler {
         } catch (IllegalArgumentException e) {
             errorCode = ErrorCode.INVALID_KEY;
         }
-        return ResponseEntity.badRequest().body(
+        return ResponseEntity.status(errorCode.getStatus()).body(
                 ApiResponse.builder()
                         .code(errorCode.getCode())
                         .message(errorCode.getMessage())
