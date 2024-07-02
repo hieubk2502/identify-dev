@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -106,11 +107,18 @@ public class AuthenticationService {
     }
 
     private String buildScope(User user) {
-        StringJoiner stringJoiner = new StringJoiner("");
+        StringJoiner stringJoiner = new StringJoiner(" ");
 
-//        if (!CollectionUtils.isEmpty(user.getRoles())) {
-//            user.getRoles().forEach(stringJoiner::add);
-//        }
+        // need to distinguish between ROLE and PERMISSION
+        if (!CollectionUtils.isEmpty(user.getRoles())) {
+            user.getRoles().forEach(roles -> {
+                stringJoiner.add("ROLE_" + roles.getName());
+
+                if (!CollectionUtils.isEmpty(roles.getPermissions())) {
+                    roles.getPermissions().forEach(permission -> stringJoiner.add(permission.getName()));
+                }
+            });
+        }
         return stringJoiner.toString();
     }
 }

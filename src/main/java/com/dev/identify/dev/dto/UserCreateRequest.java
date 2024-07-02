@@ -1,4 +1,4 @@
-package com.dev.identify.dev.dto.response;
+package com.dev.identify.dev.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -7,15 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
-import java.util.Set;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponse {
-
-    String id;
+public class UserCreateRequest {
 
     String username;
 
@@ -26,6 +23,4 @@ public class UserResponse {
     String lastname;
 
     LocalDate dob;
-
-    Set<RoleResponse> roles;
 }
