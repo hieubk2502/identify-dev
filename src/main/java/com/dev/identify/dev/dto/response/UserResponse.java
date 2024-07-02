@@ -1,6 +1,5 @@
 package com.dev.identify.dev.dto.response;
 
-import com.dev.identify.dev.entity.Roles;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,5 +27,5 @@ public class UserResponse {
 
     LocalDate dob;
 
-    Set<Roles> roles;
+    Set<RoleResponse> roles;
 }

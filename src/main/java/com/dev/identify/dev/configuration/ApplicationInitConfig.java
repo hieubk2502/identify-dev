@@ -1,7 +1,7 @@
 package com.dev.identify.dev.configuration;
 
+import com.dev.identify.dev.entity.Roles;
 import com.dev.identify.dev.entity.User;
-import com.dev.identify.dev.enums.Role;
 import com.dev.identify.dev.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -31,14 +31,17 @@ public class ApplicationInitConfig {
 
             if (!userAdminExist) {
 
-                Set<String> roleAdmin = new HashSet<>();
-                roleAdmin.add(Role.ADMIN.name());
+                Set<Roles> roleAdmin = new HashSet<>();
+                Roles role = Roles.builder()
+                        .name("ADMIN")
+                        .build();
+                roleAdmin.add(role);
 
                 User userAdmin = User
                         .builder()
                         .username("admin")
                         .password(passwordEncoder.encode("admin"))
-//                        .roles(roleAdmin)
+                        .roles(roleAdmin)
                         .build();
                 userRepository.save(userAdmin);
                 log.warn("Admin user has been created with username: admin . password: admin");

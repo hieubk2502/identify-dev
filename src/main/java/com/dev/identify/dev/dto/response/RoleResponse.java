@@ -1,6 +1,5 @@
 package com.dev.identify.dev.dto.response;
 
-import com.dev.identify.dev.entity.Permission;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

@@ -1,11 +1,8 @@
 package com.dev.identify.dev.controller;
 
 import com.dev.identify.dev.dto.request.ApiResponse;
-import com.dev.identify.dev.dto.request.PermissionRequest;
 import com.dev.identify.dev.dto.request.RoleRequest;
-import com.dev.identify.dev.dto.response.PermissionResponse;
 import com.dev.identify.dev.dto.response.RoleResponse;
-import com.dev.identify.dev.service.PermissionService;
 import com.dev.identify.dev.service.RoleService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
