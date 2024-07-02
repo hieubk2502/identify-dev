@@ -3,11 +3,13 @@ package com.dev.identify.dev.service;
 import com.dev.identify.dev.dto.request.UserCreateRequest;
 import com.dev.identify.dev.dto.request.UserUpdateRequest;
 import com.dev.identify.dev.dto.response.UserResponse;
+import com.dev.identify.dev.entity.Roles;
 import com.dev.identify.dev.entity.User;
 import com.dev.identify.dev.enums.Role;
 import com.dev.identify.dev.exception.AppException;
 import com.dev.identify.dev.exception.ErrorCode;
 import com.dev.identify.dev.mapper.UserMapper;
+import com.dev.identify.dev.repository.RoleRepository;
 import com.dev.identify.dev.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,8 @@ public class UserService {
 
     UserMapper userMapper;
 
+    RoleRepository roleRepository;
+
     PasswordEncoder passwordEncoder;
 
     public UserResponse createUser(UserCreateRequest request) {
@@ -44,14 +48,19 @@ public class UserService {
         // Bcrypt password
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        HashSet<String> roles = new HashSet<>();
-        roles.add(Role.USER.name());
-//        user.setRoles(roles);
+        HashSet<Roles> roleSet = new HashSet<>();
+
+        Roles roles = Roles.builder()
+                .name(Role.USER.name())
+                .build();
+        roleSet.add(roles);
+        user.setRoles(roleSet);
 
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasAuthority('READ_DATA')")
     public List<UserResponse> getUsers() {
         log.info("In method get Users");
         return userMapper.toListUserResponse(userRepository.findAll());
@@ -94,8 +103,12 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("UserId not found"));
 
         userMapper.updateUser(user, request);
-        userRepository.save(user);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        return userMapper.toUserResponse(user);
+        List<Roles> roles = roleRepository.findAllById(request.getRoles());
+
+        user.setRoles(new HashSet<>(roles));
+
+        return userMapper.toUserResponse(userRepository.save(user));
     }
 }
