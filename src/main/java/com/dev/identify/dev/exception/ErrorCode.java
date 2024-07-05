@@ -17,10 +17,11 @@ public enum ErrorCode {
     INVALID_KEY(1000, "Invalid_key", HttpStatus.BAD_REQUEST),
     USER_EXISTED(1001, "User existed", HttpStatus.BAD_REQUEST),
     USER_NOT_EXISTED(1002, "User not existed", HttpStatus.NOT_FOUND),
-    USERNAME_INVALID(1003, "Username must be a least at 4 characters", HttpStatus.BAD_REQUEST),
-    PASSWORD_INVALID(1004, "Password must be a least at 4 characters", HttpStatus.BAD_REQUEST),
+    USERNAME_INVALID(1003, "Username must be a least at {min} characters", HttpStatus.BAD_REQUEST),
+    PASSWORD_INVALID(1004, "Password must be a least at {min} characters", HttpStatus.BAD_REQUEST),
     UNAUTHENTICATED(1005, "Unauthenticated", HttpStatus.UNAUTHORIZED),
-    UNAUTHORIZED(1006, "Unauthorized", HttpStatus.FORBIDDEN);
+    UNAUTHORIZED(1006, "Unauthorized", HttpStatus.FORBIDDEN),
+    INVALID_DOB(1007, "Your age must be at least {min}", HttpStatus.BAD_REQUEST);
 
     int code;
     String message;
