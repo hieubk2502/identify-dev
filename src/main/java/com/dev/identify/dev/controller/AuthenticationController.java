@@ -1,10 +1,7 @@
 package com.dev.identify.dev.controller;
 
 
-import com.dev.identify.dev.dto.request.ApiResponse;
-import com.dev.identify.dev.dto.request.AuthenticationRequest;
-import com.dev.identify.dev.dto.request.IntrospectRequest;
-import com.dev.identify.dev.dto.request.LogoutRequest;
+import com.dev.identify.dev.dto.request.*;
 import com.dev.identify.dev.dto.response.AuthenticationResponse;
 import com.dev.identify.dev.dto.response.IntrospectResponse;
 import com.dev.identify.dev.service.AuthenticationService;
@@ -46,6 +43,14 @@ public class AuthenticationController {
 
         return ApiResponse.<Void>builder()
                 .message("Logout done!")
+                .build();
+    }
+
+    @PostMapping("/refreshtoken")
+    public ApiResponse<AuthenticationResponse> refreshToken(@RequestBody RefreshRequest request) throws Exception {
+
+        return ApiResponse.<AuthenticationResponse>builder()
+                .body(authenticationService.refreshToken(request))
                 .build();
     }
 
