@@ -6,7 +6,6 @@ import com.dev.identify.dev.dto.request.LogoutRequest;
 import com.dev.identify.dev.dto.request.RefreshRequest;
 import com.dev.identify.dev.dto.response.AuthenticationResponse;
 import com.dev.identify.dev.dto.response.IntrospectResponse;
-import com.dev.identify.dev.dto.response.UserResponse;
 import com.dev.identify.dev.entity.InvalidatedToken;
 import com.dev.identify.dev.entity.User;
 import com.dev.identify.dev.exception.AppException;
@@ -118,7 +117,7 @@ public class AuthenticationService {
 
         Date expired = (isRefresh) ?
                 new Date(signedJWT.getJWTClaimsSet().getIssueTime().toInstant().plus(REFRESHABLE_TOKEN_DURATION, ChronoUnit.SECONDS).toEpochMilli())
-                :signedJWT.getJWTClaimsSet().getExpirationTime();
+                : signedJWT.getJWTClaimsSet().getExpirationTime();
 
         // pre verify token , r toi check xem token co ton tai hay khong
 

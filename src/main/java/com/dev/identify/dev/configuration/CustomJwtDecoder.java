@@ -40,14 +40,14 @@ public class CustomJwtDecoder implements JwtDecoder {
                             .token(token)
                             .build());
 
-            if(!response.isValid()){
+            if (!response.isValid()) {
                 throw new AppException(ErrorCode.EXPIRED_TOKEN);
             }
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
 
-        if(Objects.isNull(nimbusJwtDecoder)){
+        if (Objects.isNull(nimbusJwtDecoder)) {
 
             SecretKeySpec secretKeySpec = new SecretKeySpec(SIGNER_KEY.getBytes(StandardCharsets.UTF_8), MacAlgorithm.HS512.getName());
 
