@@ -1,9 +1,6 @@
 package com.dev.identify.dev.dto.response;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
@@ -13,13 +10,12 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UserResponse {
 
     String id;
 
     String username;
-
-    String password;
 
     String firstname;
 
