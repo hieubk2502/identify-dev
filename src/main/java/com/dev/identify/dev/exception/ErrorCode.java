@@ -21,7 +21,8 @@ public enum ErrorCode {
     PASSWORD_INVALID(1004, "Password must be a least at {min} characters", HttpStatus.BAD_REQUEST),
     UNAUTHENTICATED(1005, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1006, "Unauthorized", HttpStatus.FORBIDDEN),
-    INVALID_DOB(1007, "Your age must be at least {min}", HttpStatus.BAD_REQUEST);
+    INVALID_DOB(1007, "Your age must be at least {min}", HttpStatus.BAD_REQUEST),
+    EXPIRED_TOKEN(1008, "Token expired!", HttpStatus.UNAUTHORIZED);
 
     int code;
     String message;
