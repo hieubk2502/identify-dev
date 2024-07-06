@@ -3,8 +3,10 @@ package com.dev.identify.dev.service;
 import com.dev.identify.dev.dto.request.AuthenticationRequest;
 import com.dev.identify.dev.dto.request.IntrospectRequest;
 import com.dev.identify.dev.dto.request.LogoutRequest;
+import com.dev.identify.dev.dto.request.RefreshRequest;
 import com.dev.identify.dev.dto.response.AuthenticationResponse;
 import com.dev.identify.dev.dto.response.IntrospectResponse;
+import com.dev.identify.dev.dto.response.UserResponse;
 import com.dev.identify.dev.entity.InvalidatedToken;
 import com.dev.identify.dev.entity.User;
 import com.dev.identify.dev.exception.AppException;
@@ -49,12 +51,20 @@ public class AuthenticationService {
     @Value("${jwt.signerKey}")
     String SIGNER_KEY;
 
+    @NonFinal
+    @Value("${jwt.valid-token-duration}")
+    int VALID_TOKEN_DURATION;
+
+    @NonFinal
+    @Value("${jwt.refreshable-token-duration}")
+    int REFRESHABLE_TOKEN_DURATION;
+
     public IntrospectResponse introspect(IntrospectRequest request) throws Exception {
 
         String token = request.getToken();
         boolean isValid = true;
         try {
-            verifyToken(token);
+            verifyToken(token, false);
         } catch (Exception ex) {
             isValid = false;
         }
@@ -83,7 +93,9 @@ public class AuthenticationService {
     }
 
     public void logout(LogoutRequest request) throws Exception {
-        SignedJWT signedToken = verifyToken(request.getToken());
+
+        // because when logout, use token not expired or expired, must check follow time of refresh token
+        SignedJWT signedToken = verifyToken(request.getToken(), true);
 
         String jit = signedToken.getJWTClaimsSet().getJWTID();
 
@@ -98,12 +110,15 @@ public class AuthenticationService {
         invalidatedTokenRepository.save(invalidatedToken);
     }
 
-    public SignedJWT verifyToken(String token) throws Exception {
+    public SignedJWT verifyToken(String token, boolean isRefresh) throws Exception {
+
         JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes(StandardCharsets.UTF_8));
 
         SignedJWT signedJWT = SignedJWT.parse(token);
 
-        Date expired = signedJWT.getJWTClaimsSet().getExpirationTime();
+        Date expired = (isRefresh) ?
+                new Date(signedJWT.getJWTClaimsSet().getIssueTime().toInstant().plus(REFRESHABLE_TOKEN_DURATION, ChronoUnit.SECONDS).toEpochMilli())
+                :signedJWT.getJWTClaimsSet().getExpirationTime();
 
         // pre verify token , r toi check xem token co ton tai hay khong
 
@@ -122,6 +137,40 @@ public class AuthenticationService {
 
     }
 
+    public AuthenticationResponse refreshToken(RefreshRequest request) throws Exception {
+        // kiem tra xem token con hieu luc khong
+
+        SignedJWT signedJWT = verifyToken(request.getToken(), true);
+
+        // neu con hieu luu lay uuid ra
+        String uuid = signedJWT.getJWTClaimsSet().getJWTID();
+        Date expiredDate = signedJWT.getJWTClaimsSet().getExpirationTime();
+
+        // tao doi luong luu trong db
+        InvalidatedToken invalidatedToken = InvalidatedToken
+                .builder()
+                .id(uuid)
+                .expiredTime(expiredDate)
+                .build();
+
+        invalidatedTokenRepository.save(invalidatedToken);
+
+        // gen new token
+
+        String username = signedJWT.getJWTClaimsSet().getSubject();
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new AppException(ErrorCode.UNAUTHENTICATED)
+        );
+
+        String generateToken = generateToken(user);
+
+        return AuthenticationResponse
+                .builder()
+                .token(generateToken)
+                .authenticate(true)
+                .build();
+    }
+
     // su dung nimbus jose de generate token
     private String generateToken(User user) {
 
@@ -131,7 +180,7 @@ public class AuthenticationService {
                 .subject(user.getUsername())
                 .issuer("dev.com") // token duoc issuer tu ai, thuong la domain project
                 .issueTime(new Date())
-                .expirationTime(new Date(Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli()))
+                .expirationTime(new Date(Instant.now().plus(VALID_TOKEN_DURATION, ChronoUnit.SECONDS).toEpochMilli()))
                 // defind 1 id for token, save token if it logout
                 .jwtID(UUID.randomUUID().toString())
                 .claim("scope", buildScope(user))

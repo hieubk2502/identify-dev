@@ -20,3 +20,6 @@ spring:
 
 jwt:
   signerKey: "4neUK67c8/yWzeUvvxM83RqiO+fAz9sd3y+ECdfot/h50UOhfzDgqt9HoGumHN6p"
+  valid-token-duration: 5 # hour
+  refreshable-token-duration: 120 # day
+
