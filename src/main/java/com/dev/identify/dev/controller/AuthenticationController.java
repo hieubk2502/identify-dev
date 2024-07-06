@@ -4,6 +4,7 @@ package com.dev.identify.dev.controller;
 import com.dev.identify.dev.dto.request.ApiResponse;
 import com.dev.identify.dev.dto.request.AuthenticationRequest;
 import com.dev.identify.dev.dto.request.IntrospectRequest;
+import com.dev.identify.dev.dto.request.LogoutRequest;
 import com.dev.identify.dev.dto.response.AuthenticationResponse;
 import com.dev.identify.dev.dto.response.IntrospectResponse;
 import com.dev.identify.dev.service.AuthenticationService;
@@ -36,6 +37,15 @@ public class AuthenticationController {
 
         return ApiResponse.<IntrospectResponse>builder()
                 .body(authenticationService.introspect(request))
+                .build();
+    }
+
+    @PostMapping("/logout")
+    public ApiResponse<Void> logout(@RequestBody LogoutRequest request) throws Exception {
+        authenticationService.logout(request);
+
+        return ApiResponse.<Void>builder()
+                .message("Logout done!")
                 .build();
     }
 
