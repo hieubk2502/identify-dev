@@ -30,7 +30,6 @@ public class CustomJwtDecoder implements JwtDecoder {
     @Value("${jwt.signerKey}")
     String SIGNER_KEY;
 
-
     @Override
     public Jwt decode(String token) {
 
