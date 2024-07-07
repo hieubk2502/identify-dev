@@ -5,7 +5,6 @@ import com.dev.identify.dev.dto.response.UserResponse;
 import com.dev.identify.dev.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @SpringBootTest
-@Slf4j
+@TestPropertySource("/application-test.properties")
 public class UserControllerTest {
 
     @Autowired
@@ -75,7 +75,7 @@ public class UserControllerTest {
         String content = mapper.writeValueAsString(request);
 
         // when
-        when(userService.createUser(any())).thenReturn(response);
+        when(userService.createUser(any(UserCreateRequest.class))).thenReturn(response);
 
         // then
 
@@ -85,7 +85,7 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(content))
                 .andExpect(
-                        status().is(HttpStatus.OK.value()));
+                        status().is(HttpStatus.OK.value())); // issue
     }
 
 }
