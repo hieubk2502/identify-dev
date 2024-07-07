@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 
 import java.time.LocalDate;
 
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 @Slf4j
 @ExtendWith(MockitoExtension.class)
+@TestPropertySource("/application-test.properties")
 public class UserServiceTest {
 
     @MockBean
@@ -66,7 +68,6 @@ public class UserServiceTest {
                 .lastname("hieu")
                 .dob(dob)
                 .build();
-
     }
 
     @Test
