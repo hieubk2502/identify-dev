@@ -37,7 +37,7 @@ public class ApplicationInitConfig {
 
                 Set<Roles> roleAdmin = new HashSet<>();
                 Roles role = Roles.builder()
-                        .name("ADMIN")
+                        .name("ROLE_ADMIN")
                         .build();
                 roleAdmin.add(role);
 
