@@ -1,0 +1,25 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /identify
+
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: "jdbc:mysql://localhost:3306/identify"
+    username: root
+    password: root
+  jpa:
+    data-platform: org.hibernate.dialect.MYSQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+      transaction:
+        jta:
+          platform: true
+    show-sql: true
+
+jwt:
+  signerKey: "4neUK67c8/yWzeUvvxM83RqiO+fAz9sd3y+ECdfot/h50UOhfzDgqt9HoGumHN6p"
+  valid-token-duration: 5 # hour
+  refreshable-token-duration: 120 # day
+
