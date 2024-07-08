@@ -20,6 +20,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
+    @Column(unique = true, columnDefinition = "varchar(255) COLLATE utf8_general_ci")
     String username;
 
     String password;
