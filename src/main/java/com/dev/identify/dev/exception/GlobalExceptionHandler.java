@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
 
     private static final String MIN_ATTRIBUTE = "min";
 
-    @ExceptionHandler(value = Exception.class)
+    @ExceptionHandler(value = RuntimeException.class)
     ResponseEntity<ApiResponse> handleRuntimeException(RuntimeException ex) {
 
         ErrorCode errorCode = ErrorCode.UNCATEGORIZED_EXCEPTION;
