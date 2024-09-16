@@ -44,7 +44,7 @@ public class CustomJwtDecoder implements JwtDecoder {
                 throw new AppException(ErrorCode.EXPIRED_TOKEN);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
 
         if (Objects.isNull(nimbusJwtDecoder)) {
