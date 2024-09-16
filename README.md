@@ -7,3 +7,4 @@ https://hub.docker.com/_/mysql
 Step 1: Add into table PERMISSION
 Step 2: Add into table ROLE
 Step 3: Run app
+mvn spring-boot:run -Dspring.profiles.active=local
