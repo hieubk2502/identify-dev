@@ -38,3 +38,5 @@ docker run --network my-network --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD
 
 docker run --name identity-service --network my-network -p 8080:8080 -e DBMS_CONNECTION= jdbc:mysql://${DBMS_IP_CONNECT:localhost}:3306/identify identify.dev-0.0.1-SNAPSHOT
 
+// push image
+docker image push {name_dockerhub}/identify
