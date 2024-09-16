@@ -24,6 +24,9 @@ public class ApplicationInitConfig {
 
     PasswordEncoder passwordEncoder;
 
+    // first run will error, because role ADMIN not reference to permission table
+    // please comment .roles(roleAdmin)
+    // later add permission table, add role and remove admin && create user admin
 
     @ConditionalOnProperty(value = "spring.datasource.url", havingValue = "jdbc:mysql://localhost:3306/identify")
     @Bean
